@@ -1,0 +1,251 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=42pt,landscape]{geometry}
+
+\usepackage{multicol}
+\setlength{\columnsep}{31pt}
+\setlength{\columnseprule}{0.4pt}
+
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{fontspec}
+% Specify different font for section headings
+\newfontfamily\headingfont[]{Gill Sans}
+\titleformat*{\section}{\LARGE\headingfont}
+\titleformat*{\subsection}{\Large\headingfont}
+\titleformat*{\subsubsection}{\large\headingfont}
+\renewcommand{\maketitlehooka}{\headingfont}
+
+\usepackage{lipsum}
+
+\begin{document}
+\begin{multicols}{3}
+\title{Haskell Cheat Sheet}
+\author{
+  Matthijs Ooms\\
+  \texttt{mo@tty.nl}
+  \and
+  Michel Rijnders\\
+  \texttt{mies@tty.nl}
+}
+\date{
+  Joy of Coding\\
+  March 1, 2013
+}
+\maketitle
+
+\section*{Data Types}
+
+\subsection*{Characters and Strings}
+
+\begin{itemize}
+\item \verb!'a'! - single character
+\item \verb!"abc"! - Unicode string
+\end{itemize}
+
+\subsection*{Numbers}
+
+\begin{itemize}
+\item \verb!42! - integer
+\item \verb!3.14! - floating point
+\end{itemize}
+
+\subsection*{Booleans}
+
+\begin{itemize}
+\item \verb!True!
+\item \verb!False!
+\end{itemize}
+
+\subsection*{Lists}
+
+\begin{itemize}
+\item \verb![]! - empty list
+\item \verb![1,2,3]! - list of three integers
+\item \verb!1 : 2 : 3 : []! - alternate way to write a list using
+  ``cons'' (\verb!:!)
+\item \verb!"abc"! - list of three characters (strings are lists)
+\end{itemize}
+
+\subsection*{Tuples}
+
+\begin{itemize}
+\item \verb!(1, "a")! - 2 element tuple of a number and a string
+\item \verb!(1, 'a', 'b', 'c')! - 4 element tuple of a number and 3
+  characters
+\end{itemize}
+
+\section*{Operators}
+
+\begin{itemize}
+\item \verb!+! - addition
+\item \verb!-! - subtraction
+\item \verb!/! - division
+\item \verb!*! - multiplication
+\item \verb!==! - equals
+\item \verb!<! - less than
+\item \verb!<=! - less than, or equals
+\item \verb!>! - greater than
+\item \verb!>=! - greater than, or equals
+\item \verb!++! - list concatenation
+\end{itemize}
+
+\section*{Functions}
+
+Functions are defined by declaring their name, and arguments, and a
+equals sign:
+\begin{verbatim}
+square x = x * x
+\end{verbatim}
+
+Function names must start with a lowercase letter or an underscore.
+
+\section*{Modules}
+
+A module is a compilation unit which exports functions. To make a
+Haskell file (\verb!.hs!) a module, add a module declaration to the
+top:
+\begin{verbatim}
+module OurModule where
+\end{verbatim}
+
+Module names must start with a uppercase letter.
+
+\subsection*{Exports}
+
+If an export list is not provided, then all functions are
+exported. Limiting what is exported is achieved by adding a list of
+names before the \verb!where! keyword:
+
+\begin{verbatim}
+module OurModule (f,g,...) where
+\end{verbatim}
+
+\subsection*{Imports}
+
+To import evertyhing exported by a module just use the module name:
+
+\begin{verbatim}
+import Data.List
+\end{verbatim}
+
+Importing selectively is achieved by giving a list of names:
+
+\begin{verbatim}
+import Data.List (intersperse)
+\end{verbatim}
+
+\section*{GHCi}
+
+\begin{itemize}
+\item \verb!:cd <dir>! - change directory
+\item \verb!:load <module>! - load module
+\item \verb!:reload! - reload all modules
+\item \verb!:help! - show help
+\item \verb!:quit! - exit
+\end{itemize}
+
+\section*{Pattern Matching}
+
+Multiple ``clauses'' of a function can be defined by
+``pattern-matching'' on the values of arguments.
+
+\begin{verbatim}
+agree "y" = "Great!"
+agree "n" = "Too bad."
+agree _ = "Huh?"
+\end{verbatim}
+
+\subsection*{Lists}
+
+\begin{itemize}
+\item \verb!(x:xs) = [1,2,3]! binds \verb!x! to \verb!1!
+\item \verb!(x:_) = [1,2,3]! binds \verb!x! to \verb!1! and \verb!xs! to  \verb![2,3]!
+\item \verb!(_:xs) = [1,2,3]! binds \verb!xs! to \verb![2,3]!
+\item \verb!(x:y:z:[]) = [1,2,3]! binds \verb!x! to \verb!1!, \verb!y! to \verb!2!, and \verb!z! to \verb!3!
+\end{itemize}
+
+Note that the empty list only matches the empty list.
+
+\section*{Currying}
+
+Functions do not have to get all their arguments at once. Consider the
+following function:
+
+\begin{verbatim}
+add x y = x + y
+\end{verbatim}
+
+Using add we can now write functions that add a certain value:
+\begin{verbatim}
+addTwo = add 2
+five = addTwo 3
+\end{verbatim}
+
+\section*{Anonymous Functions}
+
+An anonymous function (i.e. a lambda expression or lambda for short),
+is a function without a name. They can be defined at any time like so:
+
+\begin{verbatim}
+addTwo = \x -> x + 2
+\end{verbatim}
+
+\section*{Local Functions}
+
+Local functions can be defined within a function using \verb!let!. The
+\verb!let! keyword must always be followed by \verb!in!.
+
+\begin{verbatim}
+five = let addTwo = add 2
+       in addTwo 3
+\end{verbatim}
+
+Local functions can also be defined using \verb!where!:
+
+\begin{verbatim}
+five = addTwo 3
+       where addTwo = add 2
+\end{verbatim}
+
+\section*{List Comprehensions}
+
+A list comprehension creates a list of values based on the generators
+and guards given:
+
+\begin{verbatim}
+f xs = [x * x | x <- xs, mod x 2 == 0]
+\end{verbatim}
+
+Another example:
+
+\begin{verbatim}
+up cs = [c | c <- cs, isUpper c]
+\end{verbatim}
+
+\section*{Case}
+
+\verb!case! is similar to a \verb!switch! statement in C or Java, but
+can match a pattern.
+
+\begin{verbatim}
+agree x =
+  case x of
+    "y" -> "Great!"
+    "n" -> "Too bad."
+    _ -> "Huh?"
+\end{verbatim}
+
+\section*{If, Then, Else}
+
+As opposed to languages like C and Java \verb!if, then, else! is an
+expression, not a control statement, i.e. it always returns a value:
+
+\begin{verbatim}
+agree x =
+  if x == "y"
+    then "Great!"
+    else "Too bad."
+\end{verbatim}
+
+\end{multicols}
+\end{document}
