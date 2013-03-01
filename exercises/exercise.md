@@ -4,7 +4,7 @@ A Proplist is a list (array) of key value pairs. Although the Proplist is a list
 
 The needed files and start of the exercises including solutions can be found at:
 
-	https://bitbucket.org/ttyams/fp-state-of-mind
+	https://github.com/tty/joy-of-coding
 
 Given the following type definition and test instances of a proplist:
 
