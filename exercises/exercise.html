@@ -1,111 +1,127 @@
 <h2 id="proplists">PROPLISTS</h2>
 
-<p>A Proplist is a list (array) of key value pairs. Although the Proplist is a list, the order of the key value pairs is irrelevant in these exercies: the Proplist is treated as a map. Usually, a record would be more suitable in Haskell but the proplist enables a more functional &#8216;State of mind&#8217;. In other languages, like Erlang for instance, proplists are very common.</p>
+<p>A proplist is a list of key value pairs. Although a proplist is a list, the
+order of the key value pairs is irrelevant in these exercises: a proplist is
+treated as a map. Usually, a record would be more suitable in Haskell but the
+proplist enables a more functional &#8220;state of mind&#8221;. In other languages, like
+Erlang for instance, proplists are very common.</p>
 
-<p>The needed files and start of the exercises including solutions can be found at:</p>
+<p>The files needed and start of the exercises including solutions can be found
+at:</p>
 
-<pre><code>https://bitbucket.org/ttyams/fp-state-of-mind
-</code></pre>
+<p><a href="https://github.com/tty/joy-of-coding">https://github.com/tty/joy-of-coding</a></p>
 
 <p>Given the following type definition and test instances of a proplist:</p>
 
-<pre><code>    module Proplists where
+<pre><code>module Proplists where
 
-    import Data.List
-    import Data.Char
+import Data.List
+import Data.Char
 
-    type Proplist = [ (String,PropVal) ] 
+type Proplist = [ (String,PropVal) ]
 
-    data PropVal = Int Integer | Str String | Undefined 
-    | Obj Proplist | Arr [PropVal]
-                deriving (Show, Eq)
+data PropVal = Int Integer
+             | Str String
+             | Undefined
+             | Obj Proplist
+             | Arr [PropVal]
+             deriving (Show, Eq)
 
-    testList :: Proplist
-    testList = [(&quot;a&quot;,Int 1), (&quot;b&quot;, Str &quot;Foo&quot;)]
+testList :: Proplist
+testList = [(&quot;a&quot;,Int 1), (&quot;b&quot;, Str &quot;Foo&quot;)]
 
-    testList2 :: Proplist
-    testList2 = [(&quot;b&quot;, Str &quot;Bar&quot;),(&quot;c&quot;, Undefined)]
+testList2 :: Proplist
+testList2 = [(&quot;b&quot;, Str &quot;Bar&quot;),(&quot;c&quot;, Undefined)]
 
-    fromArr a = Arr a
-    fromStr s = Str s
-    fromObj o = Obj o
-    fromInt i = Int i
+fromArr a = Arr a
+fromStr s = Str s
+fromObj o = Obj o
+fromInt i = Int i
 </code></pre>
 
 <h3 id="deletion">1. Deletion</h3>
 
-<p>Create or clone from github the file &#8220;Proplists.hs&#8221; with above content. </p>
+<p>Write a function named <code>del</code> that removes a key (if present) from a proplist:</p>
 
-<p>Write a function named &#8220;del&#8221; that removes a key (if present) from a proplist, ie. </p>
+<pre><code>&gt; del &quot;b&quot; testList
+[(&quot;a&quot;,Int 1)]
 
-<pre><code>    &gt; del &quot;b&quot; testList 
-    [(&quot;a&quot;,Int 1)]
-
-    &gt; del &quot;c&quot; testList 
-    [(&quot;a&quot;,Int 1),(&quot;b&quot;,Str &quot;Foo&quot;)]
+&gt; del &quot;c&quot; testList
+[(&quot;a&quot;,Int 1),(&quot;b&quot;,Str &quot;Foo&quot;)]
 </code></pre>
 
 <h3 id="setter">2. Setter</h3>
 
-<p>Create a function &#8216;set&#8217; that sets or replaces a given key of a proplist, ie.</p>
+<p>Create a function <code>set</code> that sets or replaces a given key of a proplist:</p>
 
-<pre><code>    &gt; set &quot;a&quot; (Str &quot;Bar&quot;) testList 
-    [(&quot;a&quot;,Str &quot;Bar&quot;),(&quot;b&quot;,Str &quot;Foo&quot;)]
+<pre><code>&gt; set &quot;a&quot; (Str &quot;Bar&quot;) testList
+[(&quot;a&quot;,Str &quot;Bar&quot;),(&quot;b&quot;,Str &quot;Foo&quot;)]
 
-    &gt; set &quot;c&quot; (Str &quot;Bar&quot;) testList 
+&gt; set &quot;c&quot; (Str &quot;Bar&quot;) testList
 [(&quot;c&quot;,Str &quot;Bar&quot;),(&quot;a&quot;,Int 1),(&quot;b&quot;,Str &quot;Foo&quot;)]
 </code></pre>
 
 <h3 id="getter">3. Getter</h3>
 
-<p>Create a function get that, given a key and a proplist, retrieves the value from the proplist, or Undefined otherwise, ie</p>
+<p>Create a function <code>get</code> that, given a key and a proplist, retrieves the value
+from the proplist, or <code>Undefined</code> otherwise:</p>
 
-<pre><code>    &gt; get &quot;a&quot; testList 
-    Int 1 
+<pre><code>&gt; get &quot;a&quot; testList
+Int 1
 
-    &gt; get &quot;c&quot; testList2 
-    Undefined
+&gt; get &quot;c&quot; testList2
+Undefined
 
-    &gt; get &quot;z&quot; testList 
-    Undefined
+&gt; get &quot;z&quot; testList
+Undefined
 </code></pre>
 
 <h3 id="mergeproplists">4. Merge proplists</h3>
 
-<p>Now a bit more challenging, create a function merge x y that merges two proplists x y by replacing or adding all values from y into x, ie.</p>
+<p>Now a bit more challenging, create a function <code>merge x y</code> that merges two
+proplists x y by replacing or adding all values from y into x:</p>
 
-<pre><code>    &gt; merge testList testList2 
-    [(&quot;c&quot;,Undefined),(&quot;b&quot;,Str &quot;Bar&quot;),(&quot;a&quot;,Int 1)]
+<pre><code>&gt; merge testList testList2
+[(&quot;c&quot;,Undefined),(&quot;b&quot;,Str &quot;Bar&quot;),(&quot;a&quot;,Int 1)]
 </code></pre>
 
-<p>or
- [(&#8220;b&#8221;,Str &#8220;Bar&#8221;),(&#8220;a&#8221;,Int 1),(&#8220;c&#8221;,Undefined)]</p>
+<p>or</p>
 
-<p>(remember, order is irrelevant)</p>
+<pre><code>[(&quot;b&quot;,Str &quot;Bar&quot;),(&quot;a&quot;,Int 1),(&quot;c&quot;,Undefined)]
+</code></pre>
+
+<p>Remember, order is irrelevant.</p>
 
 <h2 id="json">JSON</h2>
 
 <h3 id="tojson">5. toJSON</h3>
 
-<p>Extend &#8220;Proplists.hs&#8221; with a function toJSON that converts a PropVal to a String, where a Proplist is encoded as a JSON object.</p>
+<p>Extend &#8220;Proplists.hs&#8221; with a function <code>toJSON</code> that converts a <code>PropVal</code> to a
+<code>String</code>, where a Proplist is encoded as a JSON object.</p>
 
-<pre><code>    &gt; putStr $ toJSON (Str &quot;test&quot;) 
-    &quot;test&quot;
+<pre><code>&gt; putStr $ toJSON (Str &quot;test&quot;)
+&quot;test&quot;
 
-    &gt; putStr $ toJSON (Obj testList) 
-    {&quot;a&quot;:1,&quot;b&quot;:&quot;Foo&quot;}
+&gt; putStr $ toJSON (Obj testList)
+{&quot;a&quot;:1,&quot;b&quot;:&quot;Foo&quot;}
 
-    &gt; putStr $ toJSON (Arr [Int 3, Str &quot;test&quot;])
-    [3,&quot;test&quot;]
+&gt; putStr $ toJSON (Arr [Int 3, Str &quot;test&quot;])
+[3,&quot;test&quot;]
 </code></pre>
 
-<p>Bonus: pretty print the output with tabs/spaces/newlines</p>
+<p>Bonus: pretty print the output with tabs/spaces/newlines.</p>
 
-<p>Parsing JSON is a bit harder and out of scope for these exercises, therefore we have included a JSON parser, written with Parsec which we will use in the next exercises. The module can be found in &#8220;JSON.hs&#8221;. Parsec is a very elegant parser, take a look if you like and try to understand.</p>
+<p>Parsing JSON is a bit harder and out of scope for these exercises, therefore
+we have included a JSON parser, written with Parsec which we will use in the
+next exercises. The module can be found in &#8220;JSON.hs&#8221;. Parsec is a very elegant
+parser, take a look if you like and try to understand.</p>
 
-<p>Note that this parser is not yet fully JSON compliant, it does not parse Bools nor Floats.</p>
+<p>Note that this parser is not yet fully JSON compliant, it does not parse Bools
+nor Floats.</p>
 
-<p>The important and only exported function from module JSON is parseJSON. It takes a string and parses it to a PropVal. The toplevel can only contain (Obj o | Arr a).</p>
+<p>The important and only exported function from module <code>JSON</code> is <code>parseJSON</code>. It
+takes a string and parses it to a <code>PropVal</code>. The toplevel can only contain be
+an object or an array.</p>
 
 <h2 id="database">DATABASE</h2>
 
@@ -120,13 +136,11 @@ import Data.List
 type DB = [ Proplist ]
 type Record = Proplist
 
-data Mp3 = Mp3 { song :: String, artist :: String, rating :: Integer } 
-    deriving (Show)
+data Mp3 = Mp3 { song :: String, artist :: String, rating :: Integer }
+deriving (Show)
 
 mp31 = Mp3 { song = &quot;Street Spirit&quot;, artist = &quot;Radiohead&quot;, rating = 9}
-
 mp32 = Mp3 { song = &quot;We Will Rock You&quot;, artist = &quot;Queen&quot;, rating = 3}
-
 mp33 = Mp3 { song = &quot;Bohemian Rhapsody&quot;, artist = &quot;Queen&quot;, rating = 4}
 
 testDb = addRecord (mp3ToProplist mp31) create
@@ -134,7 +148,7 @@ testDb2 = addRecord (mp3ToProplist mp32) testDb
 testDb3 = addRecord (mp3ToProplist mp33) testDb2
 
 makeMp3 s a r = mp3
-    where
+  where
     s' = set &quot;song&quot; (fromStr s) []
     a' = set &quot;artist&quot; (fromStr a) s'
     mp3 = set &quot;rating&quot; (fromInt r) a'
@@ -150,84 +164,95 @@ addRecord r db = r:db
 
 <h3 id="importjsonmodule">6. Import JSON module</h3>
 
-<p>Create a new file &#8220;Db.hs&#8221;, import JSON and Proplists modules. Test that you can convert the above database to JSON.</p>
+<p>Create a new file &#8220;Db.hs&#8221;, import <code>JSON</code> and <code>Proplists modules</code>. Test that
+you can convert the above database to JSON.</p>
 
-<pre><code>    &gt; dbToJSON testDb3 
+<pre><code>&gt; dbToJSON testDb3
 </code></pre>
 
 <p>Check that the parser works:</p>
 
-<pre><code>   &gt; fromJSON (dbToJSON testDb3)
+<pre><code>&gt; fromJSON (dbToJSON testDb3)
 </code></pre>
 
 <h3 id="search">7. Search</h3>
 
-<p>Write a function search that searches through a database using a given function. The type of this function is:</p>
+<p>Write a function <code>search</code> that searches through a database using a given
+function. The type of this function is:</p>
 
-<pre><code>    search :: (Record -&gt; Bool) -&gt; DB -&gt; D
+<pre><code>search :: (Record -&gt; Bool) -&gt; DB -&gt; D
 
-    &gt; search (\x -&gt; (get &quot;artist&quot; x) == (fromStr &quot;Queen&quot;)) testDb3
+&gt; search (\x -&gt; (get &quot;artist&quot; x) == (fromStr &quot;Queen&quot;)) testDb3
 
-    [[(&quot;rating&quot;,Int 3),(&quot;artist&quot;,Str &quot;Queen&quot;),(&quot;song&quot;,Str &quot;Bohemian Rhapsody&quot;)],
-     [(&quot;rating&quot;,Int 4),(&quot;artist&quot;,Str &quot;Queen&quot;),(&quot;song&quot;,Str &quot;We Will Rock You&quot;)]]
+[[(&quot;rating&quot;,Int 3),(&quot;artist&quot;,Str &quot;Queen&quot;),(&quot;song&quot;,Str &quot;Bohemian Rhapsody&quot;)],
+[(&quot;rating&quot;,Int 4),(&quot;artist&quot;,Str &quot;Queen&quot;),(&quot;song&quot;,Str &quot;We Will Rock You&quot;)]]
 </code></pre>
 
-<p>This anonymous function used here, can be seen as the &#8216;WHERE&#8217; clause of a select statement.</p>
+<p>This anonymous function used here, can be seen as the <code>WHERE</code> clause of a
+select statement.</p>
 
 <h3 id="searchfunctions">8. Search functions</h3>
 
-<p>Now we can write selector functions that can be used instead of the anonymous function. Create a function that can be used to search for all records that have a rating higher than 4. </p>
+<p>Now we can write selector functions that can be used instead of the anonymous
+function. Create a function that can be used to search for all records that
+have a rating higher than 4.</p>
 
-<pre><code>    &gt; search ratinghigherthan4 testDb3
-    [[(&quot;rating&quot;,Int 9),(&quot;artist&quot;,Str &quot;Radiohead&quot;),(&quot;song&quot;,Str &quot;Street Spirit&quot;)]]
+<pre><code>&gt; search ratingHigherThan4 testDb3
+[[(&quot;rating&quot;,Int 9),(&quot;artist&quot;,Str &quot;Radiohead&quot;),(&quot;song&quot;,Str &quot;Street Spirit&quot;)]]
 </code></pre>
 
 <h3 id="select">9. Select</h3>
 
-<p>Write a function select that selects all Records of a DB based on a given Propval. The type of this function is:</p>
+<p>Write a function <code>select</code> that selects all Records of a DB based on a given
+<code>Propval</code>. The type of this function is:</p>
 
-<pre><code>    select :: (Record -&gt; PropVal) -&gt; PropVal -&gt; DB -&gt; DB
+<pre><code>select :: (Record -&gt; PropVal) -&gt; PropVal -&gt; DB -&gt; DB
 
-    &gt; select (get &quot;artist&quot;) (fromStr &quot;Queen&quot;) testDb3
+&gt; select (get &quot;artist&quot;) (fromStr &quot;Queen&quot;) testDb3
 
-    [[(&quot;rating&quot;,Int 3),(&quot;artist&quot;,Str &quot;Queen&quot;),(&quot;song&quot;,Str &quot;Bohemian Rhapsody&quot;)],
-     [(&quot;rating&quot;,Int 3),(&quot;artist&quot;,Str &quot;Queen&quot;),(&quot;song&quot;,Str &quot;We Will Rock You&quot;)]]
+[[(&quot;rating&quot;,Int 3),(&quot;artist&quot;,Str &quot;Queen&quot;),(&quot;song&quot;,Str &quot;Bohemian Rhapsody&quot;)],
+[(&quot;rating&quot;,Int 3),(&quot;artist&quot;,Str &quot;Queen&quot;),(&quot;song&quot;,Str &quot;We Will Rock You&quot;)]]
 </code></pre>
 
 <p>Now we can create selector functions using currying:</p>
 
-<pre><code>    artistSelector artist = select artistEq (fromStr artist)
+<pre><code>artistSelector artist = select artistEq (fromStr artist)
 
-    artistEq = (get &quot;artist&quot;)
+artistEq = (get &quot;artist&quot;)
 
-    &gt; artistSelector &quot;Queen&quot; testDb3
+&gt; artistSelector &quot;Queen&quot; testDb3
 
-    [[(&quot;rating&quot;,Int 3),(&quot;artist&quot;,Str &quot;Queen&quot;),(&quot;song&quot;,Str &quot;Bohemian Rhapsody&quot;)],
-     [(&quot;rating&quot;,Int 3),(&quot;artist&quot;,Str &quot;Queen&quot;),(&quot;song&quot;,Str &quot;We Will Rock You&quot;)]]
+[[(&quot;rating&quot;,Int 3),(&quot;artist&quot;,Str &quot;Queen&quot;),(&quot;song&quot;,Str &quot;Bohemian Rhapsody&quot;)],
+ [(&quot;rating&quot;,Int 3),(&quot;artist&quot;,Str &quot;Queen&quot;),(&quot;song&quot;,Str &quot;We Will Rock You&quot;)]]
 </code></pre>
 
 <h3 id="update">10. Update</h3>
 
-<p>Write a function update that is similar to select, but with an extra argument, a Record. All rows matching the selection are updated using the given record. You can use the merge function for this.</p>
+<p>Write a function <code>update</code> that is similar to <code>select</code>, but with an extra
+argument, a <code>Record</code>. All rows matching the selection are updated using the
+given record. You can use the <code>merge</code> function for this.</p>
 
-<p>The type of this function is </p>
+<p>The type of this function is</p>
 
-<pre><code>    update :: (Record -&gt; PropVal) -&gt; PropVal -&gt; Record -&gt; DB -&gt; DB
+<pre><code>update :: (Record -&gt; PropVal) -&gt; PropVal -&gt; Record -&gt; DB -&gt; DB
 
-    &gt; update (get &quot;artist&quot;) (fromStr &quot;Queen&quot;) [(&quot;rating&quot;, Int 10000)] testDb3
+&gt; update (get &quot;artist&quot;) (fromStr &quot;Queen&quot;) [(&quot;rating&quot;, Int 10000)] testDb3
 
-    [[(&quot;rating&quot;,Int 10000),(&quot;artist&quot;,Str &quot;Queen&quot;),(&quot;song&quot;,Str &quot;Bohemian Rhapsody&quot;)],
-     [(&quot;rating&quot;,Int 10000),(&quot;artist&quot;,Str &quot;Queen&quot;),(&quot;song&quot;,Str &quot;We Will Rock You&quot;)],
-     [(&quot;rating&quot;,Int 9),(&quot;artist&quot;,Str &quot;Radiohead&quot;),(&quot;song&quot;,Str &quot;Street Spirit&quot;)]]
+[[(&quot;rating&quot;,Int 10000),(&quot;artist&quot;,Str &quot;Queen&quot;),(&quot;song&quot;,Str &quot;Bohemian Rhapsody&quot;)],
+ [(&quot;rating&quot;,Int 10000),(&quot;artist&quot;,Str &quot;Queen&quot;),(&quot;song&quot;,Str &quot;We Will Rock You&quot;)],
+ [(&quot;rating&quot;,Int 9),(&quot;artist&quot;,Str &quot;Radiohead&quot;),(&quot;song&quot;,Str &quot;Street Spirit&quot;)]]
 </code></pre>
 
 <h3 id="beers">11. Beers!!</h3>
 
-<p>If you pulled the exercise files from Github you probably noticed the function readDB which uses IO to read a json database of beers. It takes one argument: a function to apply to the read database.</p>
+<p>If you pulled the exercise files from GitHub you probably noticed the function
+readDB which uses IO to read a JSON database of beers. It takes one argument:
+a function to apply to the read database.</p>
 
-<p>Give it a try: </p>
+<p>Give it a try:</p>
 
 <pre><code>readDB (\x -&gt; printDB (select (get &quot;name&quot;) (Str &quot;Innovation&quot;) x))
 </code></pre>
 
-<p>Write a (selector) function that finds the beer with the highest alcohol by volume (abv).</p>
+<p>Write a (selector) function that finds the beer with the highest alcohol by
+volume (abv).</p>

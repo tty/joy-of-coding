@@ -9,7 +9,7 @@ Erlang for instance, proplists are very common.
 The files needed and start of the exercises including solutions can be found
 at:
 
-        https://github.com/tty/joy-of-coding
+[https://github.com/tty/joy-of-coding](https://github.com/tty/joy-of-coding)
 
 Given the following type definition and test instances of a proplist:
 
