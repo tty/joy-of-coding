@@ -6,7 +6,7 @@ treated as a map. Usually, a record would be more suitable in Haskell but the
 proplist enables a more functional "state of mind". In other languages, like
 Erlang for instance, proplists are very common.
 
-The needed files and start of the exercises including solutions can be found
+The files needed and start of the exercises including solutions can be found
 at:
 
         https://github.com/tty/joy-of-coding
@@ -40,7 +40,6 @@ Given the following type definition and test instances of a proplist:
 
 ### 1. Deletion
 
-
 Write a function named `del` that removes a key (if present) from a proplist:
 
     > del "b" testList
@@ -61,7 +60,7 @@ Create a function `set` that sets or replaces a given key of a proplist:
 
 ### 3. Getter
 
-Create a function get that, given a key and a proplist, retrieves the value
+Create a function `get` that, given a key and a proplist, retrieves the value
 from the proplist, or `Undefined` otherwise:
 
     > get "a" testList
@@ -75,7 +74,7 @@ from the proplist, or `Undefined` otherwise:
 
 ### 4. Merge proplists
 
-Now a bit more challenging, create a function merge x y that merges two
+Now a bit more challenging, create a function `merge x y` that merges two
 proplists x y by replacing or adding all values from y into x:
 
     > merge testList testList2
@@ -85,7 +84,7 @@ or
 
     [("b",Str "Bar"),("a",Int 1),("c",Undefined)]
 
-(remember, order is irrelevant)
+Remember, order is irrelevant.
 
 ## JSON
 
@@ -103,7 +102,7 @@ Extend "Proplists.hs" with a function `toJSON` that converts a `PropVal` to a
     > putStr $ toJSON (Arr [Int 3, Str "test"])
     [3,"test"]
 
-Bonus: pretty print the output with tabs/spaces/newlines
+Bonus: pretty print the output with tabs/spaces/newlines.
 
 Parsing JSON is a bit harder and out of scope for these exercises, therefore
 we have included a JSON parser, written with Parsec which we will use in the
@@ -113,9 +112,9 @@ parser, take a look if you like and try to understand.
 Note that this parser is not yet fully JSON compliant, it does not parse Bools
 nor Floats.
 
-The important and only exported function from module JSON is parseJSON. It
-takes a string and parses it to a PropVal. The toplevel can only contain (Obj
-o | Arr a).
+The important and only exported function from module `JSON` is `parseJSON`. It
+takes a string and parses it to a `PropVal`. The toplevel can only contain be
+an object or an array.
 
 ## DATABASE
 
@@ -157,7 +156,8 @@ Given the following functions and data definitions in "Db.hs", this should compi
 
 ### 6. Import JSON module
 
-Create a new file "Db.hs", import JSON and Proplists modules. Test that you can convert the above database to JSON.
+Create a new file "Db.hs", import `JSON` and `Proplists modules`. Test that
+you can convert the above database to JSON.
 
     > dbToJSON testDb3
 
@@ -167,7 +167,7 @@ Check that the parser works:
 
 ### 7. Search
 
-Write a function search that searches through a database using a given
+Write a function `search` that searches through a database using a given
 function. The type of this function is:
 
     search :: (Record -> Bool) -> DB -> D
@@ -177,7 +177,7 @@ function. The type of this function is:
     [[("rating",Int 3),("artist",Str "Queen"),("song",Str "Bohemian Rhapsody")],
     [("rating",Int 4),("artist",Str "Queen"),("song",Str "We Will Rock You")]]
 
-This anonymous function used here, can be seen as the 'WHERE' clause of a
+This anonymous function used here, can be seen as the `WHERE` clause of a
 select statement.
 
 ### 8. Search functions
@@ -186,12 +186,13 @@ Now we can write selector functions that can be used instead of the anonymous
 function. Create a function that can be used to search for all records that
 have a rating higher than 4.
 
-    > search ratinghigherthan4 testDb3
+    > search ratingHigherThan4 testDb3
     [[("rating",Int 9),("artist",Str "Radiohead"),("song",Str "Street Spirit")]]
 
 ### 9. Select
 
-Write a function select that selects all Records of a DB based on a given Propval. The type of this function is:
+Write a function `select` that selects all Records of a DB based on a given
+`Propval`. The type of this function is:
 
     select :: (Record -> PropVal) -> PropVal -> DB -> DB
 
@@ -213,9 +214,9 @@ Now we can create selector functions using currying:
 
 ### 10. Update
 
-Write a function update that is similar to select, but with an extra argument,
-a Record. All rows matching the selection are updated using the given
-record. You can use the merge function for this.
+Write a function `update` that is similar to `select`, but with an extra
+argument, a `Record`. All rows matching the selection are updated using the
+given record. You can use the `merge` function for this.
 
 The type of this function is
 
@@ -229,8 +230,8 @@ The type of this function is
 
 ### 11. Beers!!
 
-If you pulled the exercise files from Github you probably noticed the function
-readDB which uses IO to read a json database of beers. It takes one argument:
+If you pulled the exercise files from GitHub you probably noticed the function
+readDB which uses IO to read a JSON database of beers. It takes one argument:
 a function to apply to the read database.
 
 Give it a try:

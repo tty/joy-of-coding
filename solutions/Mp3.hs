@@ -25,10 +25,10 @@ makeMp3 s a r = mp3
 
 mp3ToProplist (Mp3 {song = s, artist = a, rating = r}) = makeMp3 s a r
 
-ratinghigherthan4 = ratinghigherthan 4
-ratinghigherthan n p = i > n
-                 where
-                  Int i = (get "rating" p)
+ratingHighterThan4 = ratingHighterThan 4
+ratingHighterThan n p = i > n
+    where
+      Int i = (get "rating" p)
 
 -- selectByArtist artist db = filterDB (contains "artist" (Str artist) ) db 
 
@@ -38,4 +38,4 @@ artistEq = (get "artist")
 
 test1 = printDB $ artistSelector "Queen" testDb3
 --   printDB $ update artistEq (Str "Queen") [("rating", (Int 11))] testDb3
-test2 = search ratinghigherthan4 testDb3
+test2 = search ratingHighterThan4 testDb3

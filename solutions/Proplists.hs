@@ -42,7 +42,6 @@ get k ((k2,p):l)
 merge :: Proplist -> Proplist -> Proplist
 merge = foldl (\x (k,v) -> set k v x) 
 
-
 --- PropVal to JSON
 toJSON :: PropVal -> String
 toJSON (Str s) = "\"" ++ s ++ "\""
